@@ -1,5 +1,9 @@
 #! /bin/bash
 
+if [[ ! -f /root/.gnupg/gpg.conf ]]; then
+  /opt/gpg.conf.sh
+fi
+
 # If the repository GPG keypair doesn't exist, create it.
 if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
   echo "Generating new gpg keys"
@@ -8,6 +12,8 @@ if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
   # If your system doesn't have a lot of entropy this may, take a long time
   # Google how-to create "artificial" entropy if this gets stuck
   gpg --batch --gen-key /opt/gpg_batch
+else
+  echo "No need to generate new gpg keys"
 fi
 
 # Export the GPG Public key
@@ -40,7 +46,7 @@ fi
 
 # Aptly looks in /root/.gnupg for default keyrings
 ln -sf /root/.gnupg/secring.gpg /opt/aptly/aptly.sec
-ln -sf /root/.gnupg/pubring.gpg /opt/aptly/aptly.pub
+ln -sf /root/.gnupg/pubring.gpg /opt/aptly/aptly.pub 
 
 # Generate Nginx Config
 /opt/nginx.conf.sh

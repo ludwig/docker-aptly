@@ -2,7 +2,7 @@
 cat << EOF > /opt/gpg_batch
 %echo Generating a GPG key, might take a while
 Key-Type: RSA
-Key-Length: 2048
+Key-Length: 4096
 Subkey-Type: ELG-E
 Subkey-Length: 1024
 Name-Real: ${FULL_NAME}
