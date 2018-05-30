@@ -2,6 +2,8 @@
 
 # If the repository GPG keypair doesn't exist, create it.
 if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
+  echo "Generating new gpg keys"
+  cp -a /dev/urandom /dev/random
   /opt/gpg_batch.sh
   # If your system doesn't have a lot of entropy this may, take a long time
   # Google how-to create "artificial" entropy if this gets stuck
@@ -37,8 +39,8 @@ if [[ -f /usr/share/keyrings/debian-archive-keyring.gpg ]]; then
 fi
 
 # Aptly looks in /root/.gnupg for default keyrings
-ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg
-ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
+ln -sf /root/.gnupg/secring.gpg /opt/aptly/aptly.sec
+ln -sf /root/.gnupg/pubring.gpg /opt/aptly/aptly.pub
 
 # Generate Nginx Config
 /opt/nginx.conf.sh
