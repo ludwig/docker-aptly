@@ -14,24 +14,18 @@
 # limitations under the License.
 
 FROM ubuntu:trusty
-#FROM debian:jessie
 
 LABEL maintainer="urpylka@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive
-
-ENV DIST=ubuntu
-ENV RELEASE=trusty
-#ENV DIST=debian
-#ENV RELEASE=jessie
 
 # Add Aptly repository
 RUN echo "deb http://repo.aptly.info/ squeeze main" > /etc/apt/sources.list.d/aptly.list
 RUN apt-key adv --keyserver pool.sks-keyservers.net --recv-keys ED75B5A4483DA07C
 
 # Add Nginx repository
-RUN echo "deb http://nginx.org/packages/$DIST/ $RELEASE nginx" > /etc/apt/sources.list.d/nginx.list
-RUN echo "deb-src http://nginx.org/packages/$DIST/ $RELEASE nginx" >> /etc/apt/sources.list.d/nginx.list
+RUN echo "deb http://nginx.org/packages/ubuntu/ trusty nginx" > /etc/apt/sources.list.d/nginx.list
+RUN echo "deb-src http://nginx.org/packages/ubuntu/ trusty nginx" >> /etc/apt/sources.list.d/nginx.list
 RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 
 # Update APT repository and install packages
