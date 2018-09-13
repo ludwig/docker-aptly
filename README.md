@@ -1,9 +1,3 @@
----
-Title:    docker-aptly
-Author:   Artem Smirnov, Bryan Hong
-Date:     September 13, 2018
-License:  Apache License, Version 2.0
----
 # docker-aptly
 
 **docker-aptly** is container w `aptly` backed by `nginx`.
@@ -124,3 +118,9 @@ It is set as an enviornment variable to allow for automation of repository updat
 ## Bugs
 
 * **startup.sh**: looks like that `gpg --batch --gen-key /opt/gpg_batch` execute in separating process & next step is incorrect.
+
+___
+
+* Copyright 2018 Artem B. Smirnov
+* Copyright 2016 Bryan J. Hong
+* Licensed under the Apache License, Version 2.0
