@@ -1,3 +1,4 @@
+# Copyright 2018 Artem B. Smirnov
 # Copyright 2016 Bryan J. Hong
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");

@@ -1,3 +1,6 @@
+# Copyright 2016 Bryan J. Hong
+# Licensed under the Apache License, Version 2.0
+
 #! /bin/bash
 
 cat << EOF > /etc/nginx/conf.d/default.conf

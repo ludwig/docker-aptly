@@ -1,3 +1,9 @@
+---
+Title:    docker-aptly
+Author:   Artem Smirnov, Bryan Hong
+Date:     September 13, 2018
+License:  Apache License, Version 2.0
+---
 docker-aptly
 ==
 

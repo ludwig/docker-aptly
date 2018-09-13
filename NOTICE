@@ -1,4 +1,10 @@
 docker-aptly
+
+Copyright 2018 Artem B. Smirnov
+
+This product contains software (https://github.com/urpylka/docker-aptly) developed
+by Artem Smirnov (http://github.com/urpylka) licensed under the Apache License.
+
 Copyright 2016 Bryan J. Hong
 
 This product contains software (https://github.com/bryanhong/docker-aptly) developed
