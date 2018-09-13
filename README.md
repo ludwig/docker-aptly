@@ -25,8 +25,6 @@ docker run \
   smirart/aptly:latest
 ```
 
-> Wait until the GPG keyrings are created (not 0 bytes) before proceeding (it can take a few minutes). They will be in the bind mount location.
-
 ### Explane of the flags
 
 Flag | Description
@@ -114,10 +112,6 @@ By default, Docker will map port 80 on the Docker host to port 80 within the con
 **Security**  
 The GPG password which you specified in `GPG_PASSWORD` is stored in plain text and visible as an environment variable inside the container.
 It is set as an enviornment variable to allow for automation of repository updates without user interaction. The GPG password can be removed completely but it is safer to encrypt the GPG keyrings because they are bind mounted outside the container to avoid the necessity of regenerating/redistributing keys if the container is removed or rebuilt.
-
-## Bugs
-
-* **startup.sh**: looks like that `gpg --batch --gen-key /opt/gpg_batch` execute in separating process & next step is incorrect.
 
 ___
 
