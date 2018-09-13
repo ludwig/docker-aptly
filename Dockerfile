@@ -16,7 +16,7 @@
 FROM ubuntu:trusty
 #FROM debian:jessie
 
-MAINTAINER bryan@turbojets.net
+LABEL maintainer="urpylka@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -61,16 +61,12 @@ RUN wget https://github.com/aptly-dev/aptly/raw/master/completion.d/aptly \
   fi\n\
 fi" >> /etc/bash.bashrc
 
-# Install Nginx Config
-COPY assets/nginx.conf.sh /opt/nginx.conf.sh
-COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
 # Install scripts
 COPY assets/*.sh /opt/
-COPY assets/update_mirror/update_mirror_ubuntu.sh /opt/update_mirror.sh
-#COPY assets/update_mirror/update_mirror_debian.sh /opt/update_mirror.sh
 
+# Install Nginx Config
+COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # Bind mount location
 VOLUME [ "/opt/aptly" ]

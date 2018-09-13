@@ -86,7 +86,7 @@ docker stop aptly
 ### Create a mirror of Ubuntu's main repository
 
 1. Attach to the container. How attach? [See this](##Configure-the-container).
-2. Run `/opt/update_mirror.sh`.
+2. Run `/opt/update_mirror_ubuntu.sh`.
 
 By default, this script will automate the creation of an Ubuntu 14.04 Trusty repository with the main and universe components, you can adjust the variables in the script to suit your needs.
 
@@ -98,7 +98,7 @@ By default, this script will automate the creation of an Ubuntu 14.04 Trusty rep
 
 When the script completes, you should have a functional mirror that you can point a client to.
 
-For create Debian's mirror use `/opt/debian_mirror.sh`.
+For create Debian's mirror use `/opt/update_mirror_debian.sh`.
 
 ## Building the container
 
