@@ -1,4 +1,5 @@
 # Copyright 2018 Artem B. Smirnov
+# Copyright 2018 Jon Azpiazu
 # Copyright 2016 Bryan J. Hong
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +20,10 @@ LABEL maintainer="urpylka@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# Update APT repository and install packages
+# Update APT repository & install packages
 RUN apt-get -q update \
-  && apt-get -y -q install aptly \
+  && apt-get -y install \
+    aptly \
     bzip2 \
     gnupg \
     gpgv \
@@ -31,8 +33,8 @@ RUN apt-get -q update \
     wget \
     xz-utils \
     apt-utils \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 # Install Aptly Configuration
 COPY assets/aptly.conf /etc/aptly.conf
