@@ -77,7 +77,7 @@ docker stop aptly
 
 ### Create a mirror of Ubuntu's main repository
 
-1. Attach to the container. How attach? [See this](##Configure-the-container).
+1. Attach to the container. How attach? See [Configure the container](#configure-the-container).
 2. Run `/opt/update_mirror_ubuntu.sh`.
 
 By default, this script will automate the creation of an Ubuntu 14.04 Trusty repository with the main and universe components, you can adjust the variables in the script to suit your needs.
@@ -107,7 +107,7 @@ docker build docker-aptly
 All of aptly's data (including PGP keys and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
 
 **Networking**  
-By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like (see [Explane of the flags](###Explane-of-the-flags)).
+By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. (See [Explane of the flags](#explane-of-the-flags)).
 
 **Security**  
 The GPG password which you specified in `GPG_PASSWORD` is stored in plain text and visible as an environment variable inside the container.
