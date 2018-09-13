@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 set -e
 
 # Automate the initial creation and update of a Debian package mirror in aptly

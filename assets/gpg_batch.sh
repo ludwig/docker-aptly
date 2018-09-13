@@ -1,7 +1,8 @@
 # Copyright 2016 Bryan J. Hong
 # Licensed under the Apache License, Version 2.0
 
-#! /bin/bash
+#! /usr/bin/env bash
+
 cat << EOF > /opt/gpg_batch
 %echo Generating a GPG key, might take a while
 Key-Type: RSA
