@@ -10,7 +10,7 @@ set -e
 # For more detail about each of the variables below refer to: 
 # https://help.ubuntu.com/community/Repositories/CommandLine
 
-UBUNTU_RELEASE=trusty
+UBUNTU_RELEASE=bionic
 UPSTREAM_URL="http://archive.ubuntu.com/ubuntu/"
 COMPONENTS=( main universe )
 REPOS=( ${UBUNTU_RELEASE} ${UBUNTU_RELEASE}-updates ${UBUNTU_RELEASE}-security )

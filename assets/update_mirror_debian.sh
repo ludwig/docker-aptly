@@ -8,7 +8,7 @@ set -e
 # include "deb http://security.debian.org jessie/updates main" in your sources.list
 # file or mirror it similarly as done below to keep up with security updates.
 
-DEBIAN_RELEASE=jessie
+DEBIAN_RELEASE=stretch
 UPSTREAM_URL="http://deb.debian.org/debian/"
 COMPONENTS=( main )
 REPOS=( ${DEBIAN_RELEASE} ${DEBIAN_RELEASE}-updates )
