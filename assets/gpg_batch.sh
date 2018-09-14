@@ -14,6 +14,8 @@ Name-Comment: Aptly Repo Signing
 Name-Email: ${EMAIL_ADDRESS}
 Expire-Date: 0
 Passphrase: ${GPG_PASSWORD}
+%pubring /opt/aptly/aptly.pub
+%secring /opt/aptly/aptly.sec 
 %commit
 %echo done
 EOF
