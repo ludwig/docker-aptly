@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 # Copyright 2018 Artem B. Smirnov
+# Copyright 2018 Jon Azpiazu
 # Copyright 2016 Bryan J. Hong
 # Licensed under the Apache License, Version 2.0
 
@@ -49,8 +50,8 @@ if [[ -f /usr/share/keyrings/debian-archive-keyring.gpg ]]; then
 fi
 
 # Aptly looks in /root/.gnupg for default keyrings
-ln -sf /root/.gnupg/secring.gpg /opt/aptly/aptly.sec
-ln -sf /root/.gnupg/pubring.gpg /opt/aptly/aptly.pub 
+ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg
+ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
 
 # Generate Nginx Config
 /opt/nginx.conf.sh
