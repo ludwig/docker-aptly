@@ -20,10 +20,13 @@ LABEL maintainer="urpylka@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN apt-key adv --keyserver pool.sks-keyservers.net --recv-keys ED75B5A4483DA07C \
+  && echo "deb http://repo.aptly.info/ squeeze main" >> /etc/apt/sources.list
+
 # Update APT repository & install packages
 RUN apt-get -q update \
   && apt-get -y install \
-    aptly=0.9.6-1 \
+    aptly=1.3.0 \
     bzip2 \
     gnupg=1.4.20-1ubuntu3.3 \
     gpgv=1.4.20-1ubuntu3.3 \
