@@ -68,9 +68,10 @@ In this situation you need remove currently aptly container (or rename it):
 docker rm 85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7
 ```
 
-### Control of docker-compose
+### Manage of docker-compose
 
 ```bash
+git clone https://github.com/urpylka/docker-aptly
 cd docker-aptly/
 
 # Build and up
