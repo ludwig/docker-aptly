@@ -25,6 +25,27 @@ docker run \
   smirart/aptly:latest
 ```
 
+For stop container use:
+
+```bash
+docker stop aptly
+```
+
+### Explane of the flags
+
+Flag | Description
+--- | ---
+`--detach=true` | Run the container in the background
+`--log-driver=syslog` | Send nginx logs to syslog on the Docker host  (requires Docker 1.6 or higher)
+`--restart=always` | Automatically start the container when the Docker daemon starts
+`--name="aptly"` | Name of the container
+`--volume $(pwd)/aptly:/opt/aptly` | Path that aptly will use to store its data : mapped path in the container
+`--publish 80:80` | Docker host port : mapped port in the container
+`--env FULL_NAME="First Last"` | The first and last name that will be associated with the GPG apt signing key
+`--env EMAIL_ADDRESS="your@email.com"` | The email address that will be associated with the GPG apt signing key
+`--env GPG_PASSWORD="PickAPassword"` | The password that will be used to encrypt the GPG apt signing key
+`--env HOSTNAME=aptly.example.com` | The hostname of the Docker host that this container is running on
+
 ### Build & run locally
 
 If you want to build and run locally I suggest to you use `docker-compose.yml`:
@@ -68,21 +89,6 @@ docker-compose restart
 docker-compose stop
 ```
 
-### Explane of the flags
-
-Flag | Description
---- | ---
-`--detach=true` | Run the container in the background
-`--log-driver=syslog` | Send nginx logs to syslog on the Docker host  (requires Docker 1.6 or higher)
-`--restart=always` | Automatically start the container when the Docker daemon starts
-`--name="aptly"` | Name of the container
-`--volume $(pwd)/aptly:/opt/aptly` | Path that aptly will use to store its data : mapped path in the container
-`--publish 80:80` | Docker host port : mapped port in the container
-`--env FULL_NAME="First Last"` | The first and last name that will be associated with the GPG apt signing key
-`--env EMAIL_ADDRESS="your@email.com"` | The email address that will be associated with the GPG apt signing key
-`--env GPG_PASSWORD="PickAPassword"` | The password that will be used to encrypt the GPG apt signing key
-`--env HOSTNAME=aptly.example.com` | The hostname of the Docker host that this container is running on
-
 ## Setup a client for use your repo
 
 1. Fetch the public PGP key from your aptly repository and add it to your trusted repositories
@@ -102,7 +108,7 @@ Flag | Description
 
     > `ubuntu` & `main` may be another. It's require from your repos on aptly.
 
-## Configure the container
+## Configure the repository
 
 For attach to the container and start to configure your aptly use:
 
@@ -110,13 +116,31 @@ For attach to the container and start to configure your aptly use:
 docker exec -it aptly /bin/bash
 ```
 
-Read [the official documentation](https://www.aptly.info/doc/overview/) for learn more about aptly.
-
-For stop container use:
+Create repo:
 
 ```bash
-docker stop aptly
+# Create repository folder
+aptly repo create -comment="ROS packages for Raspbian Stretch" -component="main" -distribution="stretch" rpi-ros-kinetic
+
+# Add deb-packages to index from `/opt/aptly/ros-kinetic-*`
+aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic-*
+
+# Publish updates
+aptly publish repo rpi-ros-kinetic rpi-ros-kinetic
 ```
+
+Add new packages:
+
+```bash
+# Add deb-packages to index from `/opt/aptly/ros-kinetic/`
+aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic/
+
+# Publish updates
+aptly publish update stretch rpi-ros-kinetic
+```
+
+
+Read [the official documentation](https://www.aptly.info/doc/overview/) for learn more about aptly.
 
 ### Create a mirror of Ubuntu's main repository
 
