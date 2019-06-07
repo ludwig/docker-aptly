@@ -8,7 +8,7 @@
 
 ## Quickstart
 
-The following command will run `aptly` and `nginx` in a container:
+The following command will download preparing image from dockerhub and run `aptly` and `nginx` in a container:
 
 ```bash
 docker run \
@@ -23,6 +23,49 @@ docker run \
   --env GPG_PASSWORD="PickAPassword" \
   --env HOSTNAME=aptly.example.com \
   smirart/aptly:latest
+```
+
+### Build & run locally
+
+If you want to build and run locally I suggest to you use `docker-compose.yml`:
+
+```bash
+docker-compose up -d
+```
+
+It command build `aptly` image and run container by same name.
+
+### Troubleshooting w same container name
+
+May be conflict if you already pull aptly from docker hub:
+
+> ERROR: for aptly  Cannot create container for service aptly: Conflict. The container name "/aptly" is already in use by container "85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7". You have to remove (or rename) that container to be able to reuse that name.
+
+In this situation you need remove currently aptly container (or rename it):
+
+```bash
+docker rm 85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7
+```
+
+### Control of docker-compose
+
+```bash
+cd docker-aptly/
+
+# Build and up
+docker-compose up -d
+
+# Remove and down
+docker-compose down
+
+# Start containers
+docker-compose start
+
+# Restart containers
+docker-compose restart
+
+# Stop containers
+docker-compose stop
 ```
 
 ### Explane of the flags
