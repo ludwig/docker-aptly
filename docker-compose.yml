@@ -1,0 +1,17 @@
+version: "2"
+services:
+    aptly:
+        container_name: aptly
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - 80:80
+        volumes:
+            - ./aptly_files:/opt/aptly
+        environment:
+            - FULL_NAME="First Last"
+            - EMAIL_ADDRESS="youremail@example.com"
+            - GPG_PASSWORD="PickAPassword"
+            - HOSTNAME=aptly.example.com
