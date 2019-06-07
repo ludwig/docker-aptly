@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# Copyright 2018 Artem B. Smirnov
+# Copyright 2018-2019 Artem B. Smirnov
 # Copyright 2018 Jon Azpiazu
 # Licensed under the Apache License, Version 2.0
 
