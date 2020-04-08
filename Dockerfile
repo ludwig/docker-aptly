@@ -58,5 +58,8 @@ RUN rm /etc/nginx/sites-enabled/*
 # Bind mount location
 VOLUME [ "/opt/aptly" ]
 
+# Allow use nginx wo initial procedure of gpg
+RUN mkdir -p /opt/aptly/public
+
 # Execute startup.sh when container starts
 ENTRYPOINT [ "/opt/startup.sh" ]
