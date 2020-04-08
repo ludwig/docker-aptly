@@ -61,5 +61,5 @@ VOLUME [ "/opt/aptly" ]
 # Allow use nginx wo initial procedure of gpg
 RUN mkdir -p /opt/aptly/public
 
-# Execute startup.sh when container starts
-ENTRYPOINT [ "/opt/startup.sh" ]
+# Start Supervisor when container starts (He calls nginx)
+ENTRYPOINT /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
