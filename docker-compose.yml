@@ -10,11 +10,7 @@ services:
     ports:
       - 80:80
 
+    # Create aptly-data volume,
+    # otherwise it makes directory
     volumes:
-      - ${APTLY_PATH}:/opt/aptly
-
-    # You should change variables in ".env" file
-    environment:
-      - FULL_NAME=${FULL_NAME:-"First Last"}
-      - EMAIL_ADDRESS=${EMAIL_ADDRESS:-"youremail@example.com"}
-      - GPG_PASSWORD=${GPG_PASSWORD:-"PickAPassword"}
+      - aptly-data:/opt/aptly
