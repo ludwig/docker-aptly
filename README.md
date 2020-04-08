@@ -24,6 +24,12 @@ docker run \
   smirart/aptly:latest
 ```
 
+If it returned (usualy on macOS):
+
+> docker: Error response from daemon: failed to initialize logging driver: Unix syslog delivery error.
+
+Execute "docker rm aptly", remove "--log-driver=syslog" and try again. More info is [there](https://docs.docker.com/config/containers/logging/configure/).
+
 For stop container use:
 
 ```bash
