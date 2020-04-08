@@ -5,48 +5,14 @@
 # Copyright 2016 Bryan J. Hong
 # Licensed under the Apache License, Version 2.0
 
-# If the repository GPG keypair doesn't exist, create it.
-if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
-  echo "Generating new gpg keys"
-  cp -a /dev/urandom /dev/random
-
-  # Generate GPG config for generating new keypair
-  /opt/gpg_batch.sh
-
-  # If your system doesn't have a lot of entropy this may, take a long time
-  # Google how-to create "artificial" entropy if this gets stuck
-  gpg --batch --gen-key /opt/gpg_batch
-else
-  echo "No need to generate new gpg keys"
-fi
-
-if [[ ! -d /opt/aptly/public ]] || [[ ! -f /opt/aptly/public/aptly_repo_signing.key ]]; then
-  echo "Export the GPG public key"
-  mkdir -p /opt/aptly/public
-  gpg --export --armor > /opt/aptly/public/aptly_repo_signing.key
-fi
+# Generate certificate if it need
+/opt/gen_keys.sh ${FULL_NAME} ${EMAIL_ADDRESS} ${GPG_PASSWORD}
 
 # Import Ubuntu keyrings if they exist
-if [[ -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ]]; then
-  gpg --list-keys
-  gpg --no-default-keyring                                     \
-      --keyring /usr/share/keyrings/ubuntu-archive-keyring.gpg \
-      --export |                                               \
-  gpg --no-default-keyring                                     \
-      --keyring trustedkeys.gpg                                \
-      --import
-fi
+/opt/imp_keys.sh /usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 # Import Debian keyrings if they exist
-if [[ -f /usr/share/keyrings/debian-archive-keyring.gpg ]]; then
-  gpg --list-keys
-  gpg --no-default-keyring                                     \
-      --keyring /usr/share/keyrings/debian-archive-keyring.gpg \
-      --export |                                               \
-  gpg --no-default-keyring                                     \
-      --keyring trustedkeys.gpg                                \
-      --import
-fi
+/opt/imp_keys.sh /usr/share/keyrings/debian-archive-keyring.gpg
 
 # Start Supervisor (He calls nginx)
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
