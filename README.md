@@ -166,6 +166,8 @@ git clone https://github.com/urpylka/docker-aptly.git
 docker build docker-aptly
 ```
 
+Also you can use just `docker-compose` commands. It will be building own images before use.
+
 ## How this image/container works
 
 **Data**
