@@ -140,7 +140,6 @@ aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic/
 aptly publish update stretch rpi-ros-kinetic
 ```
 
-
 Read [the official documentation](https://www.aptly.info/doc/overview/) for learn more about aptly.
 
 ### Create a mirror of Ubuntu's main repository
@@ -171,13 +170,13 @@ docker build docker-aptly
 
 ## How this image/container works
 
-**Data**  
+**Data**
 All of aptly's data (including PGP keys and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
 
-**Networking**  
+**Networking**
 By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. (See [Explane of the flags](#explane-of-the-flags)).
 
-**Security**  
+**Security**
 The GPG password which you specified in `GPG_PASSWORD` is stored in plain text and visible as an environment variable inside the container.
 It is set as an enviornment variable to allow for automation of repository updates without user interaction. The GPG password can be removed completely but it is safer to encrypt the GPG keyrings because they are bind mounted outside the container to avoid the necessity of regenerating/redistributing keys if the container is removed or rebuilt.
 
