@@ -20,7 +20,7 @@ else
   echo "No need to generate new gpg keys"
 fi
 
-if [[ ! -f /opt/aptly/public/aptly_repo_signing.key ]]; then
+if [[ ! -d /opt/aptly/public ]] || [[ ! -f /opt/aptly/public/aptly_repo_signing.key ]]; then
   echo "Export the GPG public key"
   mkdir -p /opt/aptly/public
   gpg --export --armor > /opt/aptly/public/aptly_repo_signing.key
