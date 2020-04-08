@@ -41,6 +41,9 @@ RUN apt-get -q update \
 
 # Install gpg configuration
 COPY assets/gpg.conf /root/.gnupg/gpg.conf
+# Aptly looks in /root/.gnupg for default keyrings
+RUN ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg && \
+    ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
 
 # Install Aptly configuration
 COPY assets/aptly.conf /etc/aptly.conf
