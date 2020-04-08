@@ -56,5 +56,6 @@ ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
 # Generate Nginx Config
 /opt/nginx.conf.sh
 
-# Start Supervisor
+# Start Supervisor (He calls nginx)
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+
