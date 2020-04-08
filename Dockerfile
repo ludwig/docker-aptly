@@ -39,15 +39,15 @@ RUN apt-get -q update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Aptly looks in /root/.gnupg for default keyrings
-RUN ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg && \
-    ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
-
 # Install configurations
 COPY assets/gpg.conf /root/.gnupg/gpg.conf
 COPY assets/aptly.conf /etc/aptly.conf
 COPY assets/nginx.conf /etc/nginx/conf.d/default.conf
 COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
+
+# Aptly looks in /root/.gnupg for default keyrings
+RUN ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg && \
+    ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
 
 # Install scripts
 COPY assets/*.sh /opt/
