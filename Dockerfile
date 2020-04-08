@@ -52,7 +52,7 @@ RUN ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg && \
 # Install scripts
 COPY assets/*.sh /opt/
 
-# Install Nginx config
+# Configure Nginx
 RUN rm /etc/nginx/sites-enabled/*
 
 # Bind mount location
