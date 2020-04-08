@@ -39,22 +39,21 @@ RUN apt-get -q update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install gpg configuration
-COPY assets/gpg.conf /root/.gnupg/gpg.conf
 # Aptly looks in /root/.gnupg for default keyrings
 RUN ln -sf /opt/aptly/aptly.sec /root/.gnupg/secring.gpg && \
     ln -sf /opt/aptly/aptly.pub /root/.gnupg/pubring.gpg
 
-# Install Aptly configuration
+# Install configurations
+COPY assets/gpg.conf /root/.gnupg/gpg.conf
 COPY assets/aptly.conf /etc/aptly.conf
 COPY assets/nginx.conf /etc/nginx/conf.d/default.conf
+COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
 
 # Install scripts
 COPY assets/*.sh /opt/
 
 # Install Nginx config
 RUN rm /etc/nginx/sites-enabled/*
-COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
 
 # This directive should be using in Docker or in Supervisor
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
