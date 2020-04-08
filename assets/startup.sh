@@ -5,10 +5,6 @@
 # Copyright 2016 Bryan J. Hong
 # Licensed under the Apache License, Version 2.0
 
-if [[ ! -f /root/.gnupg/gpg.conf ]]; then
-  /opt/gpg.conf.sh
-fi
-
 # If the repository GPG keypair doesn't exist, create it.
 if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
   echo "Generating new gpg keys"

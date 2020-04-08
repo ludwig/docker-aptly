@@ -39,6 +39,9 @@ RUN apt-get -q update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Install gpg configuration
+COPY assets/gpg.conf /root/.gnupg/gpg.conf
+
 # Install Aptly configuration
 COPY assets/aptly.conf /etc/aptly.conf
 
