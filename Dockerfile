@@ -55,9 +55,6 @@ COPY assets/*.sh /opt/
 # Install Nginx config
 RUN rm /etc/nginx/sites-enabled/*
 
-# This directive should be using in Docker or in Supervisor
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
 # Bind mount location
 VOLUME [ "/opt/aptly" ]
 
