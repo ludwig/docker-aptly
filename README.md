@@ -21,7 +21,7 @@ docker run \
   --env FULL_NAME="First Last" \
   --env EMAIL_ADDRESS="youremail@example.com" \
   --env GPG_PASSWORD="PickAPassword" \
-  --env HOSTNAME=aptly.example.com \
+  --env HOSTNAME=example.com \
   smirart/aptly:latest
 ```
 
@@ -44,7 +44,7 @@ Flag | Description
 `--env FULL_NAME="First Last"` | The first and last name that will be associated with the GPG apt signing key
 `--env EMAIL_ADDRESS="your@email.com"` | The email address that will be associated with the GPG apt signing key
 `--env GPG_PASSWORD="PickAPassword"` | The password that will be used to encrypt the GPG apt signing key
-`--env HOSTNAME=aptly.example.com` | The hostname of the Docker host that this container is running on
+`--env HOSTNAME=example.com` | The hostname of the Docker host that this container is running on
 
 ### Build & run locally
 
