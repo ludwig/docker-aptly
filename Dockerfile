@@ -39,13 +39,13 @@ RUN apt-get -q update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Aptly Configuration
+# Install Aptly configuration
 COPY assets/aptly.conf /etc/aptly.conf
 
 # Install scripts
 COPY assets/*.sh /opt/
 
-# Install Nginx Config
+# Install Nginx config
 RUN rm /etc/nginx/sites-enabled/*
 COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
 
@@ -55,5 +55,5 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 # Bind mount location
 VOLUME [ "/opt/aptly" ]
 
-# Execute Startup script when container starts
+# Execute startup.sh when container starts
 ENTRYPOINT [ "/opt/startup.sh" ]

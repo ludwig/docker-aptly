@@ -3,7 +3,7 @@ set -e
 
 # Automate the initial creation and update of a Debian package mirror in aptly
 
-# The variables (as set below) will create a mirror of the Debian jessie repo 
+# The variables (as set below) will create a mirror of the Debian jessie repo
 # with the main and update components. If you do mirror these, you'll want to
 # include "deb http://security.debian.org jessie/updates main" in your sources.list
 # file or mirror it similarly as done below to keep up with security updates.
@@ -47,7 +47,7 @@ done
 echo ${SNAPSHOTARRAY[@]}
 
 # Merge snapshots into a single snapshot with updates applied
-echo "Merging snapshots into one.." 
+echo "Merging snapshots into one.."
 aptly snapshot merge -latest                 \
   ${DEBIAN_RELEASE}-merged-`date +%Y%m%d%H`  \
   ${SNAPSHOTARRAY[@]}

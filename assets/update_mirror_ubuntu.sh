@@ -3,11 +3,11 @@ set -e
 
 # Automate the initial creation and update of an Ubuntu package mirror in aptly
 
-# The variables (as set below) will create a mirror of the Ubuntu Trusty repo 
+# The variables (as set below) will create a mirror of the Ubuntu Trusty repo
 # with the main & universe components, you can add other components like restricted
 # multiverse etc by adding to the array (separated by spaces).
 
-# For more detail about each of the variables below refer to: 
+# For more detail about each of the variables below refer to:
 # https://help.ubuntu.com/community/Repositories/CommandLine
 
 UBUNTU_RELEASE=bionic
@@ -49,7 +49,7 @@ done
 echo ${SNAPSHOTARRAY[@]}
 
 # Merge snapshots into a single snapshot with updates applied
-echo "Merging snapshots into one.." 
+echo "Merging snapshots into one.."
 aptly snapshot merge -latest                 \
   ${UBUNTU_RELEASE}-merged-`date +%Y%m%d%H`  \
   ${SNAPSHOTARRAY[@]}
