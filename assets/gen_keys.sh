@@ -3,9 +3,14 @@
 # Copyright 2018-2020 Artem B. Smirnov
 # Licensed under the Apache License, Version 2.0
 
-Use: gen_keys.sh <FULL_NAME> <EMAIL_ADDRESS> <GPG_PASSWORD>
+# Use: gen_keys.sh <FULL_NAME> <EMAIL_ADDRESS> <GPG_PASSWORD>
 
 gen_batch() {
+
+[[ -z $1 ]] && exit 1;
+[[ -z $2 ]] && exit 1;
+[[ -z $3 ]] && exit 1;
+
   cat << EOF > /opt/gpg_batch
 %echo Generating a GPG key, might take a while
 Key-Type: RSA
@@ -30,7 +35,7 @@ if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
   cp -a /dev/urandom /dev/random
 
   # Generate GPG config for generating new keypair
-  gen_batch ${1} ${2} ${3}
+  gen_batch ${$1:-${FULL_NAME}} ${$2:-${EMAIL_ADDRESS}} ${$3:-${GPG_PASSWORD}}
 
   # If your system doesn't have a lot of entropy this may, take a long time
   # Google how-to create "artificial" entropy if this gets stuck
