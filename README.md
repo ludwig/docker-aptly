@@ -52,13 +52,19 @@ Flag | Description
 
 ### Build & run locally
 
-If you want to build and run locally I suggest to you use `docker-compose.yml`:
+If you want to build and run locally I suggest to use `docker-compose`:
 
 ```bash
 docker-compose up -d
 ```
 
 It command build `aptly` image and run container by same name.
+
+If want rebuild image (builded by `docker-compose`), use:
+
+```bash
+docker-compose up -d --build
+```
 
 ### Troubleshooting w same container name
 
