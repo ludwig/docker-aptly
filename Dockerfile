@@ -62,4 +62,4 @@ VOLUME [ "/opt/aptly" ]
 RUN mkdir -p /opt/aptly/public
 
 # Start Supervisor when container starts (He calls nginx)
-ENTRYPOINT /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+CMD /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
