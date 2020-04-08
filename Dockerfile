@@ -44,6 +44,7 @@ COPY assets/gpg.conf /root/.gnupg/gpg.conf
 
 # Install Aptly configuration
 COPY assets/aptly.conf /etc/aptly.conf
+COPY assets/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Install scripts
 COPY assets/*.sh /opt/

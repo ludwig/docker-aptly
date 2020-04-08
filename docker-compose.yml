@@ -18,4 +18,3 @@ services:
       - FULL_NAME=${FULL_NAME:-"First Last"}
       - EMAIL_ADDRESS=${EMAIL_ADDRESS:-"youremail@example.com"}
       - GPG_PASSWORD=${GPG_PASSWORD:-"PickAPassword"}
-      - HOSTNAME=${HOSTNAME:-"example.com"}
