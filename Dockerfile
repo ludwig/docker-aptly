@@ -48,6 +48,8 @@ COPY assets/*.sh /opt/
 # Install Nginx Config
 RUN rm /etc/nginx/sites-enabled/*
 COPY assets/supervisord.nginx.conf /etc/supervisor/conf.d/nginx.conf
+
+# This directive should be using in Docker or in Supervisor
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # Bind mount location
