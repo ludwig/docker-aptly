@@ -11,9 +11,14 @@ services:
       - 80:80
 
     # Create aptly-data volume,
-    # otherwise it makes directory
+    # otherwise use directory, fe:
+    # - ./aptly-data:/opt/aptly
     volumes:
       - aptly-data:/opt/aptly
 
     # If want to use additional environments,
     # you can set them in .env file
+
+volumes:
+  aptly-data:
+    external: true
