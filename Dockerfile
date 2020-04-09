@@ -1,4 +1,4 @@
-# Copyright 2018-2019 Artem B. Smirnov
+# Copyright 2018-2020 Artem B. Smirnov
 # Copyright 2018 Jon Azpiazu
 # Copyright 2016 Bryan J. Hong
 #
