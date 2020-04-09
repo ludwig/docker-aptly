@@ -18,11 +18,11 @@
 
     Also you can use `--driver` option. By default it equals to `local`. More info is [here](https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins#volume-plugins).
 
-2. If you want to customize image or build the container locally, check out this repository and build, **otherwise skip this step** and use prepared image from [`dockerhub`](https://hub.docker.com/r/smirart/aptly/):
+2. If you want to customize image or build the container locally, check out this repository and build, **otherwise skip this step** and use prepared image from [`Github Packages`](https://github.com/urpylka/docker-aptly/packages):
 
     ```bash
     git clone https://github.com/urpylka/docker-aptly.git
-    docker build docker-aptly --tag smirart/aptly:latest
+    docker build docker-aptly --tag docker.pkg.github.com/urpylka/docker-aptly/aptly:latest
     ```
 
     If you decide build I suggest use [`docker-compose`](#manage-locally) commands. It will build own image before use.
@@ -35,7 +35,7 @@
       --env EMAIL_ADDRESS="your@email.com" \
       --env GPG_PASSWORD="PickAPassword" \
       --volume aptly-data:/opt/aptly \
-      smirart/aptly:latest /opt/gen_keys.sh
+      docker.pkg.github.com/urpylka/docker-aptly/aptly:latest /opt/gen_keys.sh
     ```
 
 4. **Run `aptly` and `nginx`**
@@ -47,7 +47,7 @@
       --name="aptly" \
       --publish 80:80 \
       --volume aptly-data:/opt/aptly \
-      smirart/aptly:latest
+      docker.pkg.github.com/urpylka/docker-aptly/aptly:latest
     ```
 
     Also you can use `--log-driver=syslog` option, more info is [here](https://docs.docker.com/config/containers/logging/configure/#supported-logging-drivers). If it returned (usualy on macOS):
