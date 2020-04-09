@@ -4,11 +4,13 @@
 
 **aptly** is a swiss army knife for Debian repository management: it allows you to mirror remote repositories, manage local package repositories, take snapshots, pull new versions of packages along with dependencies, publish as Debian repository. More info are on [aptly.info](http://aptly.info) and on [github](https://github.com/aptly-dev/aptly).
 
-**nginx** is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. More info is on [nginx.org](http://nginx.org/en/). It project use `supervisor` to run `nginx`. `supervisor` in docker allow to manage multiple processes in a container.
+**nginx** is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. More info is on [nginx.org](http://nginx.org/en/). It project use `supervisor` to run `nginx`.
+
+> `supervisor` in docker allow to manage multiple processes in the container.
 
 ## Quickstart
 
-1. Create docker `aptly-data` volume **if it doesn't exist**, otherwise skip this step and it will make directory:
+1. Create docker `aptly-data` volume **if it doesn't exist**, otherwise use directory:
 
     ```bash
     docker volume create --name aptly-data
@@ -16,11 +18,14 @@
 
     Also you can use `--driver` option. By default it equals to `local`. More info is [here](https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins#volume-plugins).
 
-2. If you want to use your own container use **or skip this step** (it just build the image):
+2. If you want to customize image or build the container locally, check out this repository and build after **otherwise skip this step**:
 
     ```bash
-    docker build . --tag smirart/aptly:latest
+    git clone https://github.com/urpylka/docker-aptly.git
+    docker build docker-aptly --tag smirart/aptly:latest
     ```
+
+    If you decide build I suggest you use [`docker-compose`](#build--run-locally) commands. It will build own image before use.
 
 3. Then generate keypair. It makes for keep `GPG_PASSWORD` separately from keyring. Keep `GPG_PASSWORD` in safely. If you already have keypair, it won't regenerate that. It command will download prepared image from [`dockerhub`](https://hub.docker.com/r/smirart/aptly/):
 
@@ -33,7 +38,7 @@
       smirart/aptly:latest /opt/gen_keys.sh
     ```
 
-4. It command runs `aptly` and `nginx` in a container:
+4. **Run `aptly` and `nginx`**
 
     ```bash
     docker run \
@@ -49,15 +54,23 @@
 
     > docker: Error response from daemon: failed to initialize logging driver: Unix syslog delivery error.
 
-    Probably you have not some driver. Execute "docker rm aptly", remove "--log-driver=syslog" and try again.
+    Probably you have not some driver. Execute `docker rm aptly`, remove `--log-driver=syslog` and try again.
 
-5. For stop container use:
+5. **Next steps**
 
-    ```bash
-    docker stop aptly
-    ```
+    * You can manage docker container with docker or [`docker-compose`](#manage-of-docker-compose). For example, you can stop it:
 
-### Explane of the flags
+        ```bash
+        docker stop aptly
+        ```
+
+    * Use `docker volume` to manage created volume.
+
+    * **Configure your own debian-repository.** See [there](#configure-the-repository).
+
+    * **Configure clients.** See [there](#setup-a-client-for-use-your-repo).
+
+### Explanation of the flags
 
 Flag | Description
 --- | ---
@@ -189,17 +202,6 @@ By default, this script will automate the creation of an Ubuntu 14.04 Trusty rep
 When the script completes, you should have a functional mirror that you can point a client to.
 
 For create Debian's mirror use `/opt/update_mirror_debian.sh`.
-
-## Building the container
-
-If you want to customize image or build the container locally, check out this repository and build after:
-
-```bash
-git clone https://github.com/urpylka/docker-aptly.git
-docker build docker-aptly
-```
-
-Also you can use just `docker-compose` commands. It will be building own images before use.
 
 ## How this image/container works
 
