@@ -143,36 +143,42 @@ docker rm 85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7
 
 ## Configure the repository
 
-For attach to the container and start to configure your aptly use:
+1. Copy files to container (volume) directory, use [`docker cp`](https://docs.docker.com/engine/reference/commandline/cp/):
 
-```bash
-docker exec -it aptly /bin/bash
-```
+    ```bash
+    docker cp aptly:/opt/aptly/<SRC_PATH> <DEST_PATH>
+    docker cp <SRC_PATH> aptly:/opt/aptly/<DEST_PATH>
+    ```
 
-Create repo:
+2. Create and update debian-repo:
 
-```bash
-# Create repository folder
-aptly repo create -comment="ROS packages for Raspbian Stretch" -component="main" -distribution="stretch" rpi-ros-kinetic
+    ```bash
+    # Attach container
+    docker exec -it aptly /bin/bash
+    ```
 
-# Add deb-packages to index from `/opt/aptly/ros-kinetic-*`
-aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic-*
+    ```bash
+    # Create repository folder
+    aptly repo create -comment="ROS packages for Raspbian Stretch" -component="main" -distribution="stretch" rpi-ros-kinetic
 
-# Publish updates
-aptly publish repo rpi-ros-kinetic rpi-ros-kinetic
-```
+    # Add deb-packages to index from `/opt/aptly/ros-kinetic-*`
+    aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic-*
 
-Add new packages:
+    # Publish updates
+    aptly publish repo rpi-ros-kinetic rpi-ros-kinetic
+    ```
 
-```bash
-# Add deb-packages to index from `/opt/aptly/ros-kinetic/`
-aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic/
+    Add new packages:
 
-# Publish updates
-aptly publish update stretch rpi-ros-kinetic
-```
+    ```bash
+    # Add deb-packages to index from `/opt/aptly/ros-kinetic/`
+    aptly repo add rpi-ros-kinetic /opt/aptly/ros-kinetic/
 
-Read [the official documentation](https://www.aptly.info/doc/overview/) for learn more about aptly.
+    # Publish updates
+    aptly publish update stretch rpi-ros-kinetic
+    ```
+
+    Read [the official documentation](https://www.aptly.info/doc/overview/) for learn more about aptly.
 
 ### Create a mirror of Ubuntu's main repository
 
