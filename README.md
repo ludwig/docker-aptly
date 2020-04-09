@@ -69,9 +69,9 @@
 
     * Use `docker volume` to manage created volume.
 
-    * **Configure your own debian-repository.** See [there](#configure-the-repository).
+    * **Configure your own debian-repository.** See [here](#configure-the-repository).
 
-    * **Configure clients.** See [there](#setup-a-client-for-use-your-repo).
+    * **Configure clients.** See [here](#setup-a-client-for-use-your-repo).
 
 ### Explanation of the flags
 
@@ -182,7 +182,7 @@ docker rm 85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7
 
 ### Create a mirror of Ubuntu's main repository
 
-1. Attach to the container. How attach? See [that](#configure-the-repository).
+1. Attach to the container. How attach? See [here](#configure-the-repository).
 2. Run `/opt/update_mirror_ubuntu.sh`.
 
 By default, this script will automate the creation of an Ubuntu 14.04 Trusty repository with the main and universe components, you can adjust the variables in the script to suit your needs.
@@ -203,7 +203,7 @@ For create Debian's mirror use `/opt/update_mirror_debian.sh`.
 All of aptly's data (including PGP keys and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
 
 **Networking**
-By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. See [that](#explanation-of-the-flags).
+By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. See [here](#explanation-of-the-flags).
 
 **Security**
 The GPG password which you specified in `GPG_PASSWORD` using only by users for:
