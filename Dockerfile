@@ -34,6 +34,7 @@ RUN apt-get -q update \
     supervisor=3.2.0-2ubuntu0.2 \
     nginx=1.10.3-0ubuntu0.16.04.5 \
     wget \
+    curl \
     xz-utils=5.1.1alpha+20120614-2ubuntu2 \
     apt-utils \
   && apt-get clean \
