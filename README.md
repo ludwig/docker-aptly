@@ -6,7 +6,7 @@
 
 **nginx** is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. More info is on [nginx.org](http://nginx.org/en/). It project use `supervisor` to run `nginx`.
 
-> `supervisor` in docker allow to manage multiple processes in the container.
+> **supervisor** in docker allow to manage multiple processes in the container.
 
 ## Quickstart
 
@@ -18,16 +18,16 @@
 
     Also you can use `--driver` option. By default it equals to `local`. More info is [here](https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins#volume-plugins).
 
-2. If you want to customize image or build the container locally, check out this repository and build after **otherwise skip this step**:
+2. If you want to customize image or build the container locally, check out this repository and build, **otherwise skip this step** and use prepared image from [`dockerhub`](https://hub.docker.com/r/smirart/aptly/):
 
     ```bash
     git clone https://github.com/urpylka/docker-aptly.git
     docker build docker-aptly --tag smirart/aptly:latest
     ```
 
-    If you decide build I suggest you use [`docker-compose`](#build--run-locally) commands. It will build own image before use.
+    If you decide build I suggest use [`docker-compose`](#manage-locally) commands. It will build own image before use.
 
-3. Then generate keypair. It makes for keep `GPG_PASSWORD` separately from keyring. Keep `GPG_PASSWORD` in safely. If you already have keypair, it won't regenerate that. It command will download prepared image from [`dockerhub`](https://hub.docker.com/r/smirart/aptly/):
+3. Then generate keypair. It makes for keep `GPG_PASSWORD` separately from keyring. Keep `GPG_PASSWORD` in safely. If you already have keypair, it won't regenerate that.
 
     ```bash
     docker run --rm --log-driver=none \
@@ -58,10 +58,13 @@
 
 5. **Next steps**
 
-    * You can manage docker container with docker or [`docker-compose`](#manage-of-docker-compose). For example, you can stop it:
+    * You can manage docker container with docker or [`docker-compose`](#manage-locally). For example:
 
         ```bash
+        docker start aptly
+        docker restart aptly
         docker stop aptly
+        docker rm aptly
         ```
 
     * Use `docker volume` to manage created volume.
@@ -84,20 +87,27 @@ Flag | Description
 `--env EMAIL_ADDRESS="your@email.com"` | The email address that will be associated with the GPG apt signing key
 `--env GPG_PASSWORD="PickAPassword"` | The password that will be used to encrypt the GPG apt signing key
 
-### Build & run locally
+## Manage locally
 
-If you want to build and run locally I suggest to use `docker-compose`:
-
-```bash
-docker-compose up -d
-```
-
-It command build `aptly` image and run container by same name.
-
-If want rebuild image (builded by `docker-compose`), use:
+If you want to build and run locally I suggest use `docker-compose`. But before create volume and generate keypair.
 
 ```bash
+git clone https://github.com/urpylka/docker-aptly
+cd docker-aptly/
+
+# Build and run
+# `--build` - if rebuild is requiring
+# `-d` - run container in the background
+# More info at: `docker-compose up --help`
 docker-compose up -d --build
+
+# Stop & remove (it doesn't remove created volumes)
+docker-compose down
+
+# Start / restart / stop container
+docker-compose start
+docker-compose restart
+docker-compose stop
 ```
 
 ### Troubleshooting w same container name
@@ -110,28 +120,6 @@ In this situation you need remove currently aptly container (or rename it):
 
 ```bash
 docker rm 85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7
-```
-
-### Manage of docker-compose
-
-```bash
-git clone https://github.com/urpylka/docker-aptly
-cd docker-aptly/
-
-# Build and up
-docker-compose up -d
-
-# Remove and down
-docker-compose down
-
-# Start containers
-docker-compose start
-
-# Restart containers
-docker-compose restart
-
-# Stop containers
-docker-compose stop
 ```
 
 ## Setup a client for use your repo
@@ -188,7 +176,7 @@ Read [the official documentation](https://www.aptly.info/doc/overview/) for lear
 
 ### Create a mirror of Ubuntu's main repository
 
-1. Attach to the container. How attach? See [Configure the container](#configure-the-container).
+1. Attach to the container. How attach? See [that](#configure-the-repository).
 2. Run `/opt/update_mirror_ubuntu.sh`.
 
 By default, this script will automate the creation of an Ubuntu 14.04 Trusty repository with the main and universe components, you can adjust the variables in the script to suit your needs.
@@ -209,7 +197,7 @@ For create Debian's mirror use `/opt/update_mirror_debian.sh`.
 All of aptly's data (including PGP keys and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
 
 **Networking**
-By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. (See [Explane of the flags](#explane-of-the-flags)).
+By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. See [that](#explanation-of-the-flags).
 
 **Security**
 The GPG password which you specified in `GPG_PASSWORD` using only by users for:
