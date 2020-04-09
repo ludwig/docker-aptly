@@ -55,7 +55,7 @@ COPY assets/*.sh /opt/
 # Configure Nginx
 RUN rm /etc/nginx/sites-enabled/*
 
-# Bind mount location
+# Create volume
 VOLUME [ "/opt/aptly" ]
 
 # Allow use nginx wo initial procedure of gpg

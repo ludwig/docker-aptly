@@ -14,3 +14,6 @@ services:
     # otherwise it makes directory
     volumes:
       - aptly-data:/opt/aptly
+
+    # If want to use additional environments,
+    # you can set them in .env file

@@ -8,11 +8,13 @@
 
 ## Quickstart
 
-1. Create docker `aptly-data` volume if it doesn't exist, otherwise skip this step and it will make directory:
+1. Create docker `aptly-data` volume **if it doesn't exist**, otherwise skip this step and it will make directory:
 
     ```bash
     docker volume create --name aptly-data
     ```
+
+    Also you can use `--driver` option. By default it equals to `local`. More info is [here](https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins#volume-plugins).
 
 2. If you want to use your own container use **or skip this step** (it just build the image):
 
@@ -20,7 +22,7 @@
     docker build . --tag smirart/aptly:latest
     ```
 
-3. Then generate keypair. It makes for keep `GPG_PASSWORD` separately from keyring. Keep `GPG_PASSWORD` in safely. It command will download prepared image from dockerhub and execute it:
+3. Then generate keypair. It makes for keep `GPG_PASSWORD` separately from keyring. Keep `GPG_PASSWORD` in safely. If you already have keypair, it won't regenerate that. It command will download prepared image from [`dockerhub`](https://hub.docker.com/r/smirart/aptly/):
 
     ```bash
     docker run --rm --log-driver=none \
@@ -36,7 +38,6 @@
     ```bash
     docker run \
       --detach=true \
-      --log-driver=syslog \
       --restart=always \
       --name="aptly" \
       --publish 80:80 \
@@ -44,11 +45,11 @@
       smirart/aptly:latest
     ```
 
-    If it returned (usualy on macOS):
+    Also you can use `--log-driver=syslog` option, more info is [here](https://docs.docker.com/config/containers/logging/configure/#supported-logging-drivers). If it returned (usualy on macOS):
 
     > docker: Error response from daemon: failed to initialize logging driver: Unix syslog delivery error.
 
-    Execute "docker rm aptly", remove "--log-driver=syslog" and try again. More info is [there](https://docs.docker.com/config/containers/logging/configure/).
+    Probably you have not some driver. Execute "docker rm aptly", remove "--log-driver=syslog" and try again.
 
 5. For stop container use:
 
@@ -64,7 +65,7 @@ Flag | Description
 `--log-driver=syslog` | Send nginx logs to syslog on the Docker host  (requires Docker 1.6 or higher)
 `--restart=always` | Automatically start the container when the Docker daemon starts
 `--name="aptly"` | Name of the container
-`--volume aptly-data:/opt/aptly` | Path or volume's name that aptly will use to store his data : mapped path in the container
+`--volume aptly-data:/opt/aptly` | Path (if you want set path use absolute path) or volume's name that aptly will use to store his data : mapped path in the container
 `--publish 80:80` | Docker host port : mapped port in the container
 `--env FULL_NAME="First Last"` | The first and last name that will be associated with the GPG apt signing key
 `--env EMAIL_ADDRESS="your@email.com"` | The email address that will be associated with the GPG apt signing key
