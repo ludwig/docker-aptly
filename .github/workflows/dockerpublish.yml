@@ -1,5 +1,8 @@
 name: Docker
 
+# If you want configure own CI,
+# setup in Github secrets: DOCKERHUB_LOGIN, DOCKERHUB_TOKEN
+
 on:
   push:
     # Publish `master` as Docker `latest` image.
