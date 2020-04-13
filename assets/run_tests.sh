@@ -46,3 +46,10 @@ RESP2=`curl -I --max-time 2 http://localhost:80/aptly_repo_signing.key 2>/dev/nu
 [[ $(echo ${RESP2} | grep Content-Length | awk -F ': ' '{print $2}') > 2000 ]] \
     && { echo2 "Filesize is ok" "GREEN"; } \
     || { echo2 "Error: Filesize is too small" "RED"; exit 1; }
+
+
+RESP3=`curl http://localhost:8080/api/version 2>/dev/null`
+
+[[ $(echo ${RESP3} | grep "Version") ]] \
+    && { echo2 "Aptly is ${RESP3}" "GREEN"; } \
+    || { echo2 "Failed to connect to Aptly API" "RED"; exit 1; }
