@@ -62,5 +62,8 @@ VOLUME [ "/opt/aptly" ]
 # Allow use nginx wo initial procedure of gpg
 RUN mkdir -p /opt/aptly/public
 
+# Declare ports in use
+EXPOSE 80 8080
+
 # Start Supervisor when container starts (He calls nginx)
 CMD /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
