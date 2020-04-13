@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-# Copyright 2018-2020 Artem Smirnov
+# Copyright 2018-2020 Artem Smirnov <urpylka@gmail.com>
 # Licensed under the Apache License, Version 2.0
 
 set -e
