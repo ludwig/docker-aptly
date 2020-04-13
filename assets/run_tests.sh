@@ -3,8 +3,6 @@
 # Copyright 2018-2020 Artem Smirnov <urpylka@gmail.com>
 # Licensed under the Apache License, Version 2.0
 
-set -e
-
 # Start Supervisor when container starts (He calls nginx)
 /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf &
 sleep 4
