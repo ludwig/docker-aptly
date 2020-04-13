@@ -40,16 +40,17 @@ RESP1=`curl -I --max-time 2 http://localhost:80 2>/dev/null`
 RESP2=`curl -I --max-time 2 http://localhost:80/aptly_repo_signing.key 2>/dev/null`
 
 [[ $(echo ${RESP2} | grep "HTTP/1.1 200 OK") ]] \
-    && { echo2 "File exists" "GREEN"; } \
+    && { echo2 "The file exists" "GREEN"; } \
     || { echo2 "Error: Bad response from the file" "RED"; exit 1; }
 
 [[ $(echo ${RESP2} | grep Content-Length | awk -F ': ' '{print $2}') > 2000 ]] \
-    && { echo2 "Filesize is ok" "GREEN"; } \
-    || { echo2 "Error: Filesize is too small" "RED"; exit 1; }
+    && { echo2 "The filesize is ok" "GREEN"; } \
+    || { echo2 "Error: The filesize is too small" "RED"; exit 1; }
 
 
 RESP3=`curl http://localhost:8080/api/version 2>/dev/null`
 
 [[ $(echo ${RESP3} | grep "Version") ]] \
     && { echo2 "Aptly is ${RESP3}" "GREEN"; } \
-    || { echo2 "Failed to connect to Aptly API" "RED"; exit 1; }
+    || { echo2 "Failed to connect to the Aptly API" "RED"; exit 1; }
+
