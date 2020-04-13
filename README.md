@@ -1,12 +1,12 @@
 # docker-aptly
 
-**docker-aptly** is container w `aptly` backed by `nginx`.
+**docker-aptly** is container with `aptly` backed by `nginx`.
 
 **aptly** is a swiss army knife for Debian repository management: it allows you to mirror remote repositories, manage local package repositories, take snapshots, pull new versions of packages along with dependencies, publish as Debian repository. More info are on [aptly.info](http://aptly.info) and on [github](https://github.com/aptly-dev/aptly).
 
-**nginx** is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. More info is on [nginx.org](http://nginx.org/en/). It project use `supervisor` to run `nginx`.
+**nginx** is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP proxy server, originally written by Igor Sysoev. More info is on [nginx.org](http://nginx.org/en/).
 
-> **supervisor** in docker allow to manage multiple processes in the container.
+It project use `supervisor` to manage multiple processes in the container. It configured to start `nginx` & `aptly api server`.
 
 ## Quickstart
 
@@ -18,31 +18,43 @@
 
     Also you can use `--driver` option. By default it equals to `local`. More info is [here](https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins#volume-plugins).
 
-2. If you want to customize image or build the container locally, check out this repository and build, **otherwise skip this step** and use prepared image from [`Dockerhub Packages`](https://hub.docker.com/r/urpylka/aptly):
+    All of aptly's data (including PGP key and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
+
+2. If you want to customize image or build the container locally, **check out this repository and build, otherwise skip this step** and use prepared image from [`DockerHub`](https://hub.docker.com/r/urpylka/aptly):
 
     ```bash
     git clone https://github.com/urpylka/docker-aptly.git
     docker build docker-aptly --tag urpylka/aptly:latest
     ```
 
-    If you decide build I suggest use [`docker-compose`](#manage-locally) commands. It will build own image before use.
+    If you decide build own I suggest use [`docker-compose`](#manage-locally) commands. It will build own image before use.
 
-3. Then generate keypair. It makes for keep `GPG_PASSWORD` separately from keyring. Keep `GPG_PASSWORD` in safely. If you already have keypair, it won't regenerate that.
+3. Then **generate keypair**. It won't regenerate that, if you already have keypair:
 
     ```bash
     docker run --rm --log-driver=none \
       --env FULL_NAME="First Last" \
       --env EMAIL_ADDRESS="your@email.com" \
-      --env GPG_PASSWORD="PickAPassword" \
+      --env GPG_PASSPHRASE="PickAPassword" \
       --volume aptly-data:/opt/aptly \
       urpylka/aptly:latest /opt/gen_keys.sh
     ```
+
+    `FULL_NAME` and `EMAIL_ADDRESS` will be associated with the GPG apt signing key.
+
+    Keep in the mind that the GPG passphrase which you specified in `GPG_PASSPHRASE` using ONLY BY USERS (at the external container) for:
+
+    1. Generating GPG keys (In the temporary container)
+    2. Singing Aptly packages (using CLI tool or REST API)
+
+    Keep your GPG passphrase separately from the GPG key pair.
 
 4. **Run `aptly` and `nginx`**
 
     ```bash
     docker run \
       --detach=true \
+      --log-driver=syslog \
       --restart=always \
       --name="aptly" \
       --publish 80:80 \
@@ -50,11 +62,20 @@
       urpylka/aptly:latest
     ```
 
-    Also you can use `--log-driver=syslog` option, more info is [here](https://docs.docker.com/config/containers/logging/configure/#supported-logging-drivers). If it returned (usualy on macOS):
+    If it returned (usualy on macOS):
 
     > docker: Error response from daemon: failed to initialize logging driver: Unix syslog delivery error.
 
-    Probably you have not some driver. Execute `docker rm aptly`, remove `--log-driver=syslog` and try again.
+    Probably you haven't some driver. Execute `docker rm aptly` and try again without `--log-driver=syslog`.
+
+    Flag | Explanation
+    --- | ---
+    `--detach=true` | Run the container in the background
+    `--log-driver=syslog` | Send nginx logs to syslog on the Docker host  (requires Docker 1.6 or higher), more info is [here](https://docs.docker.com/config/containers/logging/configure/#supported-logging-drivers).
+    `--restart=always` | Automatically start the container when the Docker daemon starts
+    `--name="aptly"` | Name of the container
+    `--volume aptly-data:/opt/aptly` | Path (if you want set path use absolute path) or volume's name that aptly will use to store his data : mapped path in the container
+    `--publish 80:80` | Docker host port : mapped port in the container
 
 5. **Next steps**
 
@@ -71,25 +92,31 @@
 
     * **Configure your own debian-repository.** See [here](#configure-the-repository).
 
+        You can also use [Aptly REST API](https://www.aptly.info/doc/api/) at `YOUR-HOST/api`. You need to generate `htpasswd` file before.
+
+        ```bash
+        docker run --rm --log-driver=none \
+        --env USER="admin" \
+        --env PASS="passwd" \
+        --volume aptly-data:/opt/aptly \
+        urpylka/aptly:latest /opt/gen_htpasswd.sh
+        ```
+
+        After executing:
+
+        ```bash
+        curl -u admin:passwd http://YOUR-HOST/api/version
+        ```
+
+        **Security:** Please note using http is not safety (your password sends as plain text). Add mandatory SSL encryption for `/api` via proxy server fe nginx. See [here](https://morph027.gitlab.io/post/protect-aptly-api-with-basic-authentication/).
+
     * **Configure clients.** See [here](#setup-a-client-for-use-your-repo).
-
-### Explanation of the flags
-
-Flag | Description
---- | ---
-`--detach=true` | Run the container in the background
-`--log-driver=syslog` | Send nginx logs to syslog on the Docker host  (requires Docker 1.6 or higher)
-`--restart=always` | Automatically start the container when the Docker daemon starts
-`--name="aptly"` | Name of the container
-`--volume aptly-data:/opt/aptly` | Path (if you want set path use absolute path) or volume's name that aptly will use to store his data : mapped path in the container
-`--publish 80:80` | Docker host port : mapped port in the container
-`--env FULL_NAME="First Last"` | The first and last name that will be associated with the GPG apt signing key
-`--env EMAIL_ADDRESS="your@email.com"` | The email address that will be associated with the GPG apt signing key
-`--env GPG_PASSWORD="PickAPassword"` | The password that will be used to encrypt the GPG apt signing key
 
 ## Manage locally
 
 If you want to build and run locally I suggest use `docker-compose`. But before create volume and generate keypair.
+
+By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. Change the docker-compose file if you use him.
 
 ```bash
 git clone https://github.com/urpylka/docker-aptly
@@ -143,14 +170,14 @@ docker rm 85de5904f6fc73c04f4f8e7d08a09a1a63c2ba28afb5ce45aa9578ebdefeadc7
 
 ## Configure the repository
 
-1. Fist of all start docker container, because access to volume produced through him. Copy files to container (volume) directory, use [`docker cp`](https://docs.docker.com/engine/reference/commandline/cp/):
+1. **Copy files to volume.** Fist of all start docker container, because access to volume produced through him. Copy files to container (volume) directory, use [`docker cp`](https://docs.docker.com/engine/reference/commandline/cp/):
 
     ```bash
     docker cp aptly:/opt/aptly/<SRC_PATH> <DEST_PATH>
     docker cp <SRC_PATH> aptly:/opt/aptly/<DEST_PATH>
     ```
 
-2. Create and update debian-repo:
+2. **Create and update debian-repo:**
 
     ```bash
     # Attach container
@@ -197,24 +224,8 @@ When the script completes, you should have a functional mirror that you can poin
 
 For create Debian's mirror use `/opt/update_mirror_debian.sh`.
 
-## How this image/container works
-
-**Data**
-All of aptly's data (including PGP keys and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
-
-**Networking**
-By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. See [here](#explanation-of-the-flags).
-
-**Security**
-The GPG password which you specified in `GPG_PASSWORD` using only by users for:
-
-1. Generating GPG keys (In the temporary container)
-2. Singing Aptly packages
-
-Keep your GPG passphrase separately from the GPG key pair.
-
 ___
 
-* Copyright 2018-2020 Artem B. Smirnov
-* Copyright 2016 Bryan J. Hong
+* © 2018-2020 Artem Smirnov
+* © 2016 Bryan J. Hong
 * Licensed under the Apache License, Version 2.0
