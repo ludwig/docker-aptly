@@ -10,11 +10,39 @@ sleep 4
 # Generate GPG keys
 /opt/gen_keys.sh "Artem Smirnov" "urpylka@gmail.com" "password"
 
-RESP1=`curl -I --max-time 2 http://127.0.0.1 2>/dev/null`
-[[ -z ${RESP1} ]] && { echo "Error: Host is down"; exit 1; } || { echo "Host is up"; }
+echo2() {
+    # TEMPLATE: echo_stamp <TEXT> <COLOR> <LINE_BREAK>
+    # More info there https://www.shellhacks.com/ru/bash-colors/
 
-RESP2=`curl -I --max-time 2 http://127.0.0.1/aptly_repo_signing.key 2>/dev/null`
-[[ $(echo ${RESP2} | grep "HTTP/1.1 200 OK") ]] || { echo "Error: Bad response"; exit 1; } \
-    && { echo "File exist"; }
+    TEXT=$1
+    # TEXT="$(date '+[%Y-%m-%d %H:%M:%S]') ${TEXT}"
+
+    TEXT="\e[1m$TEXT\e[0m" # BOLD
+
+    case "$2" in
+        GREEN) TEXT="\e[32m${TEXT}\e[0m";;
+        RED)   TEXT="\e[31m${TEXT}\e[0m";;
+        BLUE)  TEXT="\e[34m${TEXT}\e[0m";;
+    esac
+
+    [[ -z $3 ]] \
+        && { echo -e ${TEXT}; } \
+        || { echo -ne ${TEXT}; }
+}
+
+RESP1=`curl -I --max-time 2 http://localhost:80 2>/dev/null`
+
+[[ ! -z ${RESP1} ]] \
+    && { echo2 "Host is up" "GREEN"; } \
+    || { echo2 "Error: Host is down" "RED"; exit 1; }
+
+
+RESP2=`curl -I --max-time 2 http://localhost:80/aptly_repo_signing.key 2>/dev/null`
+
+[[ $(echo ${RESP2} | grep "HTTP/1.1 200 OK") ]] \
+    && { echo2 "File exists" "GREEN"; } \
+    || { echo2 "Error: Bad response from the file" "RED"; exit 1; }
+
 [[ $(echo ${RESP2} | grep Content-Length | awk -F ': ' '{print $2}') > 2000 ]] \
-    && { echo "Filesize is ok"; } || { echo "Error: Filesize is too small"; exit 1; }
+    && { echo2 "Filesize is ok" "GREEN"; } \
+    || { echo2 "Error: Filesize is too small" "RED"; exit 1; }
