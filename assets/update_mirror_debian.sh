@@ -57,11 +57,11 @@ set +e
 aptly publish list -raw | awk '{print $2}' | grep "^${DEBIAN_RELEASE}$"
 if [[ $? -eq 0 ]]; then
   aptly publish switch            \
-    -passphrase="${GPG_PASSWORD}" \
+    -passphrase="${GPG_PASSPHRASE}" \
     ${DEBIAN_RELEASE} ${DEBIAN_RELEASE}-merged-`date +%Y%m%d%H`
 else
   aptly publish snapshot \
-    -passphrase="${GPG_PASSWORD}" \
+    -passphrase="${GPG_PASSPHRASE}" \
     -distribution=${DEBIAN_RELEASE} ${DEBIAN_RELEASE}-merged-`date +%Y%m%d%H`
 fi
 set -e

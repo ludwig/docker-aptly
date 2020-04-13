@@ -3,12 +3,12 @@
 # Copyright 2018-2020 Artem B. Smirnov
 # Licensed under the Apache License, Version 2.0
 
-# Use: gen_keys.sh <FULL_NAME> <EMAIL_ADDRESS> <GPG_PASSWORD>
+# Use: gen_keys.sh <FULL_NAME> <EMAIL_ADDRESS> <GPG_PASSPHRASE>
 
 # https://stackoverflow.com/questions/4437573/bash-assign-default-value
 : ${FULL_NAME:=${1}}
 : ${EMAIL_ADDRESS:=${2}}
-: ${GPG_PASSWORD:=${3}}
+: ${GPG_PASSPHRASE:=${3}}
 
 gen_batch() {
 
@@ -40,7 +40,7 @@ if [[ ! -f /opt/aptly/aptly.sec ]] || [[ ! -f /opt/aptly/aptly.pub ]]; then
   cp -a /dev/urandom /dev/random
 
   # Generate GPG config for generating new keypair
-  gen_batch ${FULL_NAME} ${EMAIL_ADDRESS} ${GPG_PASSWORD}
+  gen_batch ${FULL_NAME} ${EMAIL_ADDRESS} ${GPG_PASSPHRASE}
 
   # If your system doesn't have a lot of entropy this may, take a long time
   # Google how-to create "artificial" entropy if this gets stuck

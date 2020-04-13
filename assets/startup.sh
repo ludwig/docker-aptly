@@ -6,7 +6,7 @@
 # Licensed under the Apache License, Version 2.0
 
 # Generate certificate if it need
-# It reads variables ${FULL_NAME} ${EMAIL_ADDRESS} ${GPG_PASSWORD}
+# It reads variables ${FULL_NAME} ${EMAIL_ADDRESS} ${GPG_PASSPHRASE}
 /opt/gen_keys.sh
 
 # Import Ubuntu keyrings if they exist

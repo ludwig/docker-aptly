@@ -59,11 +59,11 @@ set +e
 aptly publish list -raw | awk '{print $2}' | grep "^${UBUNTU_RELEASE}$"
 if [[ $? -eq 0 ]]; then
   aptly publish switch            \
-    -passphrase="${GPG_PASSWORD}" \
+    -passphrase="${GPG_PASSPHRASE}" \
     ${UBUNTU_RELEASE} ${UBUNTU_RELEASE}-merged-`date +%Y%m%d%H`
 else
   aptly publish snapshot \
-    -passphrase="${GPG_PASSWORD}" \
+    -passphrase="${GPG_PASSPHRASE}" \
     -distribution=${UBUNTU_RELEASE} ${UBUNTU_RELEASE}-merged-`date +%Y%m%d%H`
 fi
 set -e
