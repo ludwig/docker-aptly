@@ -10,6 +10,9 @@ sleep 4
 # Generate GPG keys
 /opt/gen_keys.sh "Artem Smirnov" "urpylka@gmail.com" "password"
 
+# Generate htpasswd file
+/opt/gen_htpasswd.sh admin passwd
+
 echo2() {
     # TEMPLATE: echo_stamp <TEXT> <COLOR> <LINE_BREAK>
     # More info there https://www.shellhacks.com/ru/bash-colors/
@@ -54,3 +57,16 @@ RESP3=`curl http://localhost:8080/api/version 2>/dev/null`
     && { echo2 "Aptly is ${RESP3}" "GREEN"; } \
     || { echo2 "Failed to connect to the Aptly API" "RED"; exit 1; }
 
+
+RESP4=`curl http://localhost:80/api/version 2>/dev/null`
+
+[[ $(echo ${RESP4} | grep "401 Authorization Required") ]] \
+    && { echo2 "Aptly API is on the proxy server & password guard is working" "GREEN"; } \
+    || { echo2 "Aptly API doesn't respond at the proxy server or password guard doesn't work" "RED"; exit 1; }
+
+
+RESP5=`curl -u admin:passwd http://localhost:80/api/version 2>/dev/null`
+
+[[ $(echo ${RESP5} | grep "Version") ]] \
+    && { echo2 "Authentification is complete" "GREEN"; } \
+    || { echo2 "Authentification failed" "RED"; exit 1; }
