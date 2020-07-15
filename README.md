@@ -20,11 +20,11 @@ It project use `supervisor` to manage multiple processes in the container. It co
 
     All of aptly's data (including PGP key and GPG keyrings) is bind mounted outside of the container to preserve it if the container is removed or rebuilt.
 
-2. If you want to customize image or build the container locally, **check out this repository and build, otherwise skip this step** and use prepared image from [`DockerHub`](https://hub.docker.com/r/urpylka/aptly):
+2. If you want to customize image or build the container locally, **check out this repository and build, otherwise skip this step** and use prepared image from [`DockerHub`](https://hub.docker.com/r/ludwig/aptly):
 
     ```bash
-    git clone https://github.com/urpylka/docker-aptly.git
-    docker build docker-aptly --tag urpylka/aptly:latest
+    git clone https://github.com/ludwig/docker-aptly.git
+    docker build docker-aptly --tag ludwig/aptly:latest
     ```
 
     If you decide build own I suggest use [`docker-compose`](#manage-locally) commands. It will build own image before use.
@@ -37,7 +37,7 @@ It project use `supervisor` to manage multiple processes in the container. It co
       --env EMAIL_ADDRESS="your@email.com" \
       --env GPG_PASSPHRASE="PickAPassword" \
       --volume aptly-data:/opt/aptly \
-      urpylka/aptly:latest /opt/gen_keys.sh
+      ludwig/aptly:latest /opt/gen_keys.sh
     ```
 
     `FULL_NAME` and `EMAIL_ADDRESS` will be associated with the GPG apt signing key.
@@ -59,7 +59,7 @@ It project use `supervisor` to manage multiple processes in the container. It co
       --name="aptly" \
       --publish 80:80 \
       --volume aptly-data:/opt/aptly \
-      urpylka/aptly:latest
+      ludwig/aptly:latest
     ```
 
     If it returned (usualy on macOS):
@@ -99,7 +99,7 @@ It project use `supervisor` to manage multiple processes in the container. It co
         --env USER="admin" \
         --env PASS="passwd" \
         --volume aptly-data:/opt/aptly \
-        urpylka/aptly:latest /opt/gen_htpasswd.sh
+        ludwig/aptly:latest /opt/gen_htpasswd.sh
         ```
 
         After executing:
@@ -119,7 +119,7 @@ If you want to build and run locally I suggest use `docker-compose`. But before 
 By default, Docker will map port 80 on the Docker host to port 80 within the container where nginx is configured to listen. You can change the external listening port to map to any port you like. Change the docker-compose file if you use him.
 
 ```bash
-git clone https://github.com/urpylka/docker-aptly
+git clone https://github.com/ludwig/docker-aptly
 cd docker-aptly/
 
 # Build and run
