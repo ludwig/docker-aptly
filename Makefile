@@ -20,6 +20,9 @@ run:
 shell:
 	docker exec -it aptly /bin/bash
 
+stop:
+	docker stop aptly
+
 key:
 	curl -L http://localhost:$(PORT)/aptly_repo_signing.key
 
